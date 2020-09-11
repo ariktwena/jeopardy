@@ -16,9 +16,9 @@ jeopardy/classes/Player.java
  jeopardy.classes.Player
 jeopardy/server/MyServer.java
  jeopardy.server.MyServer
+jeopardy/questionReader/InputStreamFromFile.java
+ jeopardy.questionReader.InputStreamFromFile
 jeopardy/game/Game.java
  jeopardy.game.Game
 jeopardy/tui/TUI.java
  jeopardy.tui.TUI
-jeopardy/questionReader/InputStreamFromFile.java
- jeopardy.questionReader.InputStreamFromFile
