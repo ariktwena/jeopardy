@@ -1,13 +1,8 @@
 package jeopardy.tui;
 
 import jeopardy.classes.Board;
-import jeopardy.classes.Player;
-import jeopardy.classes.Question_board;
 
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class TUI {
@@ -23,7 +18,6 @@ public class TUI {
         this.board = new Board();
 
     }
-
 
     //Get player name
     public String getPlayerName() {
@@ -125,12 +119,6 @@ public class TUI {
         writer.flush();
     }
 
-    /**
-     *
-     * Play Board - Category
-     *
-     */
-
     //Choose category
     public String playerCategoryInput(){
         writer.println("");
@@ -142,38 +130,22 @@ public class TUI {
 
 
     //Show chosen category
-    public void getCategoryTitle(int index_start, ArrayList<Question_board> list){
+    public void getCategoryTitle(String name){
         writer.println("");
-        writer.println("You have chosen the Category '" + list.get(index_start).getCategory().getCategoryName() + "', here are the the available questions and possible score prize!");
+        writer.println("You have chosen the Category '" + name + "', here are the the available questions and possible score prize!");
         writer.flush();
     }
 
+    //Available question and points
+    public void availableQuestionsInCategoryAndPoint(String option, int score){
+        writer.println(option + ": " + score);
+        writer.flush();
+    }
 
-    /**
-     *
-     * Play Board - Questions
-     *
-     */
-
-    //Show available questions
-    public void availableQuestionsInCategory(int index_start, int index_end, ArrayList<Question_board> list){
-
-        String[] choiseSpots = {"A", "B", "C", "D", "E"};
-        int choiseCount = 0;
-
-        for( int i = index_start ; i < index_end ; i++ ){
-            if(list.get(i).getAnswered() == null){
-
-                writer.println(choiseSpots[choiseCount] + ": " + list.get(i).getScore());
-                writer.flush();
-
-            } else {
-                writer.println(choiseSpots[choiseCount] + ": Question has already been answered.");
-                writer.flush();
-            }
-            choiseCount ++;
-        }
-
+    //Non available question and points
+    public void nonAvailableQuestionsInCategoryAndPoint(String option){
+        writer.println(option + ": Question has already been answered.");
+        writer.flush();
     }
 
     //Choose question choice
@@ -185,17 +157,16 @@ public class TUI {
         return input;
     }
 
+    //Show the question is taken
+    public void questionHasAlreadyBeenPlayed(){
+        writer.print("The question has already been played\n");
+        writer.flush();
+    }
+
     //Get the question
-    public boolean getTheQuestion(ArrayList<Question_board> list, int index_start, int question_index){
-        if(list.get(index_start + question_index).getAnswered() != null){
-            writer.print("The question has already been played\n");
-            writer.flush();
-            return false;
-        } else {
-            writer.print(list.get(index_start + question_index).getQuestion());
-            writer.flush();
-            return true;
-        }
+    public void getQuestion(String question){
+        writer.print(question);
+        writer.flush();
     }
 
     //Choose question answer
@@ -207,36 +178,19 @@ public class TUI {
         return input;
     }
 
-    //Validate answer
-    public void validateAnswer(ArrayList<Question_board> list, int index_start, int question_index, String answer, Player player){
-        if(list.get(index_start + question_index).getAnswer().equalsIgnoreCase(answer)){
-
-            //Message to the player
-            writer.print("Correct " + player.getName() + "!!! You have earned " + list.get(index_start + question_index).getScore() + " points :)\n");
-            writer.flush();
-
-            //We add the score to the player
-            player.setScore(player.getScore() + list.get(index_start + question_index).getScore());
-
-            //We deactivet the question
-            list.get(index_start + question_index).setAnswered("---");
-
-        } else {
-            //Message to the player
-            writer.print("Incorrect " + player.getName() + "! The right answer is: " + list.get(index_start + question_index).getAnswer() + "\n");
-            writer.flush();
-
-            //We deactivet the question
-            list.get(index_start + question_index).setAnswered("---");
-
-        }
+    //Correct answer
+    public void correctAnswer(String name, int score){
+        //Message to the player
+        writer.print("Correct " + name + "!!! You have earned " + score + " points :)\n");
+        writer.flush();
     }
 
-    /**
-     *
-     * Play Board - Hard
-     *
-     */
+    //Incorrect answer
+    public void incorrectAnswer(String name, String answer){
+        //Message to the player
+        writer.print("Incorrect " + name + "! The right answer is: " + answer + "\n");
+        writer.flush();
+    }
 
     //Get help
     public void getHardBoardMessage(){
@@ -245,36 +199,26 @@ public class TUI {
         writer.flush();
     }
 
-
-    //public void createBoard(ArrayList<Question> list, int cat1, int cat2, int cat3, int cat4, int cat5, int cat6){
-    public void createBoard(ArrayList<Question_board> list) {
-
-        //We print the header of the board (The list has 30 spots. Every 5 spot is a now line of questions)
+    //Board header
+    public void getBoardHeader(){
         writer.println(board.getHeader());
-        writer.format(board.getCategoryLeftAlignFormat(),
-                "A: " + list.get(0).getCategory().getCategoryName(),
-                "B: " +list.get(5).getCategory().getCategoryName(),
-                "C: " +list.get(10).getCategory().getCategoryName(),
-                "D: " +list.get(15).getCategory().getCategoryName(),
-                "E: " +list.get(20).getCategory().getCategoryName(),
-                "F: " +list.get(25).getCategory().getCategoryName());
-
-        //We print 5 rows of point on the board
-        for( int i = 0 ; i < 5 ; i++ ){
-            writer.println(board.getSeparator());
-            writer.format(board.getScoreLeftAlignFormatRow(),
-                    list.get(0 + i).getAnswered() == null ? list.get(0 + i).getScore() : list.get(0 + i).getAnswered(),
-                    list.get(5 + i).getAnswered() == null ? list.get(5 + i).getScore() : list.get(5 + i).getAnswered(),
-                    list.get(10 + i).getAnswered() == null ? list.get(10 + i).getScore() : list.get(10 + i).getAnswered(),
-                    list.get(15 + i).getAnswered() == null ? list.get(15 + i).getScore() : list.get(15 + i).getAnswered(),
-                    list.get(20 + i).getAnswered() == null ? list.get(20 + i).getScore() : list.get(20 + i).getAnswered(),
-                    list.get(25 + i).getAnswered() == null ? list.get(25 + i).getScore() : list.get(25 + i).getAnswered());
-        }
+    }
+    //Board Category Left Align
+    public void getBoardCategoryLeftAlignFormat(String cat1, String cat2, String cat3, String cat4, String cat5, String cat6){
+        writer.format(board.getCategoryLeftAlignFormat(), cat1, cat2, cat3, cat4, cat5, cat6);
+    }
+    //Board Separator
+    public void getBoardSeparator(){
+        writer.println(board.getSeparator());
+    }
+    //Board Score Left
+    public void getBoardScoreLeftAlignFormatRow(String score1, String score2, String score3, String score4, String score5, String score6){
+        writer.format(board.getScoreLeftAlignFormatRow(), score1, score2, score3, score4, score5, score6);
+    }
+    //Board Footer
+    public void getBoardFooter(){
         writer.println(board.getFooter());
         writer.flush();
-
-
-
     }
 
 

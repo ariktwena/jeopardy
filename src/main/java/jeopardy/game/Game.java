@@ -97,7 +97,7 @@ public class Game {
         gameStart = true;
 
         //Load the current status of the board
-        tui.createBoard(list);
+        drawBoard(list);
 
         //A list of the answers possibilities for the categories/questions
         List<String> answerIndex = List.of("a", "b", "c", "d", "e", "f");
@@ -118,10 +118,10 @@ public class Game {
             index_end = 5 + (5 * input_index_categoty);
 
             //Get the category title to display
-            tui.getCategoryTitle(index_start, list);
+            tui.getCategoryTitle(list.get(index_start).getCategory().getCategoryName());
 
             //Get the available questions and non if they are answered
-            tui.availableQuestionsInCategory(index_start, index_end, list);
+            availableQuestionsInCategory(index_start, index_end, list);
 
             //Player Question choice
             String playerQuestionChoice = tui.playerQuestionInputChoice().toLowerCase();
@@ -136,13 +136,13 @@ public class Game {
                 int question_index = input_index_question;
 
                 //We check if the question is NOT answered og else the methode will display a message to the player
-                if(tui.getTheQuestion(list, index_start, question_index)){
+                if(getTheQuestion(list, index_start, question_index)){
 
                     //Player answer
                     String answer = tui.playerQuestionInputAnswer();
 
                     //We check if the players answer matches the right answer
-                    tui.validateAnswer(list, index_start, question_index, answer, player);
+                    validateAnswer(list, index_start, question_index, answer);
 
                     //We update the number of questions that have been played
                     numberOfAnswers += 1;
@@ -176,6 +176,54 @@ public class Game {
 
     }
 
+    public void availableQuestionsInCategory(int index_start, int index_end, ArrayList<Question_board> list){
+        String[] choiseSpots = {"A", "B", "C", "D", "E"};
+        int choiseCount = 0;
+
+        for( int i = index_start ; i < index_end ; i++ ){
+            if(list.get(i).getAnswered() == null){
+
+                tui.availableQuestionsInCategoryAndPoint(choiseSpots[choiseCount], list.get(i).getScore());
+
+            } else {
+
+                tui.nonAvailableQuestionsInCategoryAndPoint(choiseSpots[choiseCount]);
+            }
+            choiseCount ++;
+        }
+    }
+
+    public void validateAnswer(ArrayList<Question_board> list, int index_start, int question_index, String answer){
+        if(list.get(index_start + question_index).getAnswer().equalsIgnoreCase(answer)){
+
+            //Message to the player
+            tui.correctAnswer(player.getName(), list.get(index_start + question_index).getScore());
+
+            //We add the score to the player
+            player.setScore(player.getScore() + list.get(index_start + question_index).getScore());
+
+            //We deactivet the question
+            list.get(index_start + question_index).setAnswered("---");
+
+        } else {
+            //Message to the player
+            tui.incorrectAnswer(player.getName(), list.get(index_start + question_index).getAnswer());
+
+            //We deactivet the question
+            list.get(index_start + question_index).setAnswered("---");
+
+        }
+    }
+
+    public boolean getTheQuestion(ArrayList<Question_board> list, int index_start, int question_index){
+        if(list.get(index_start + question_index).getAnswered() != null){
+            tui.questionHasAlreadyBeenPlayed();
+            return false;
+        } else {
+            tui.getQuestion(list.get(index_start + question_index).getQuestion());
+            return true;
+        }
+    }
 
     public void getSwitch(String playerInput){
         switch (playerInput) {
@@ -215,6 +263,36 @@ public class Game {
             startGame();
 
         }
+    }
+
+    //public void createBoard(ArrayList<Question> list, int cat1, int cat2, int cat3, int cat4, int cat5, int cat6){
+    public void drawBoard(ArrayList<Question_board> list) {
+        String score1, score2, score3, score4, score5, score6;
+
+        //We print the header of the board (The list has 30 spots. Every 5 spot is a now line of questions)
+        tui.getBoardHeader();
+        tui.getBoardCategoryLeftAlignFormat("A: " + list.get(0).getCategory().getCategoryName(),
+                                            "B: " +list.get(5).getCategory().getCategoryName(),
+                                            "C: " +list.get(10).getCategory().getCategoryName(),
+                                            "D: " +list.get(15).getCategory().getCategoryName(),
+                                            "E: " +list.get(20).getCategory().getCategoryName(),
+                                            "F: " +list.get(25).getCategory().getCategoryName());
+
+        //We print 5 rows of point on the board
+        for( int i = 0 ; i < 5 ; i++ ){
+            tui.getBoardSeparator();
+            score1 = list.get(0 + i).getAnswered() == null ? String.valueOf(list.get(0 + i).getScore()) : list.get(0 + i).getAnswered();
+            score2 = list.get(5 + i).getAnswered() == null ? String.valueOf(list.get(5 + i).getScore()) : list.get(5 + i).getAnswered();
+            score3 = list.get(10 + i).getAnswered() == null ? String.valueOf(list.get(10 + i).getScore()) : list.get(10 + i).getAnswered();
+            score4 = list.get(15 + i).getAnswered() == null ? String.valueOf(list.get(15 + i).getScore()) : list.get(15 + i).getAnswered();
+            score5 = list.get(20 + i).getAnswered() == null ? String.valueOf(list.get(20 + i).getScore()) : list.get(20 + i).getAnswered();
+            score6 = list.get(25 + i).getAnswered() == null ? String.valueOf(list.get(25 + i).getScore()) : list.get(25 + i).getAnswered();
+
+
+            tui.getBoardScoreLeftAlignFormatRow(score1, score2, score3, score4, score5, score6);
+        }
+        tui.getBoardFooter();
+
     }
 
 
