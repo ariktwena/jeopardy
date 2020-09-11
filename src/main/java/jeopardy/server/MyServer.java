@@ -33,47 +33,11 @@ public class MyServer implements Runnable{
             //WE CAN'T USE System.out.println for client messages
             PrintWriter writer = new PrintWriter(socket.getOutputStream());
 
+            //We create the InputStreamFromFile class
             InputStreamFromFile inputStreamFromFile = new InputStreamFromFile();
-            inputStreamFromFile.injectInputStreamToReader(scanner, writer);
 
-//            /**
-//             *
-//             * 1. Start project
-//             * 2. Open Terminal
-//             * 3. Write: telnet 127.0.0.1 6060
-//             * See the connection in the Terminal -> "Write something >"
-//             *
-//             */
-//
-//            //We create a String
-//            String line;
-//
-//            //Message to user
-//            writer.print("Write something > ");
-//
-//            //We flush and show the message
-//            writer.flush();
-//
-//            //We scan/loop as long as the user doesn't write "quit"
-//            while(!(line = scanner.nextLine()).equalsIgnoreCase("quit")){
-//
-//                //We can stop all future connections if we write "stop"
-//                if(line.equalsIgnoreCase("stop")){
-//
-//                    //We set the volatile boolean to false
-//                    keepRunning = false;
-//                }
-//
-//                //We reprint the message that the user is writing
-//                writer.println("You said: " + line);
-//
-//                //Message to user
-//                writer.print("Write something > ");
-//
-//                //We flush and show the message
-//                writer.flush();
-//
-//            }
+            //We execute the reader that starts our program
+            inputStreamFromFile.injectInputStreamToReader(scanner, writer);
 
             //We close the socket (We get to is when we write "quit")
             socket.close();
@@ -91,6 +55,9 @@ public class MyServer implements Runnable{
     public static volatile boolean keepRunning = true;
 
     public static void main(String[] args) throws IOException {
+
+        //Localhost message
+        System.out.println("Connect: telnet 127.0.0.1 6060");
 
         //Local port: There is op to 1000. After 1000 we need special permission.
         final int port = 6060;
@@ -113,32 +80,6 @@ public class MyServer implements Runnable{
 
             //We start the thread
             thread.start();
-
-
-//            //Makes the thread sleep
-//            try{
-//                Thread.sleep( 3000 );
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//
-//            //Waits for response "async"
-//            try{
-//                thread.join();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//
-//            //Waits for response "async" for amount of time
-//            try{
-//                thread.join(3000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//
-//            //Interrupts the thread and closes it
-//            thread.interrupt();
-
 
         }
 
