@@ -56,20 +56,44 @@ public class TUI {
     //Loading text
     public void loader(){
         try{
-            writer.println("Loading.....");
+            writer.println("");
+            writer.print("Loading");
             writer.flush();
-            Thread.sleep(1500);
-        } catch (InterruptedException i){
-            throw new UnsupportedOperationException("You got an InterruptedException: " + i.getMessage());
+            for(int i = 0 ; i < 6 ; i ++){
+                try{
+                    Thread.sleep(500);
+                    writer.print(".");
+                    writer.flush();
+                } catch (InterruptedException e){
+                    throw new UnsupportedOperationException("You got an InterruptedException: " + e.getMessage());
+                }
+            }
+            writer.print("");
+            writer.flush();
+            Thread.sleep(500);
+        } catch (InterruptedException e){
+            throw new UnsupportedOperationException("You got an InterruptedException: " + e.getMessage());
         }
     }
 
     //Loading text
     public void loaderLong(){
         try{
-            writer.println("Loading.....");
+            writer.println("");
+            writer.print("Loading");
             writer.flush();
-            Thread.sleep(3000);
+            for(int i = 0 ; i < 6 ; i ++){
+                try{
+                    Thread.sleep(500);
+                    writer.print(".");
+                    writer.flush();
+                } catch (InterruptedException e){
+                    throw new UnsupportedOperationException("You got an InterruptedException: " + e.getMessage());
+                }
+            }
+            writer.print("");
+            writer.flush();
+            Thread.sleep(1500);
         } catch (InterruptedException i){
             throw new UnsupportedOperationException("You got an InterruptedException: " + i.getMessage());
         }
