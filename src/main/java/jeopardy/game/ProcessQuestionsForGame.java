@@ -121,82 +121,32 @@ public class ProcessQuestionsForGame {
         // create instance of Random class
         Random rand = new Random();
 
-        // Generate random integers in range 0 to hardQuestionsModList.size() - 5
-        int random1 = rand.nextInt(list.size() - 5);
-        int random2 = rand.nextInt(list.size() - 5);
-        int random3 = rand.nextInt(list.size() - 5);
-        int random4 = rand.nextInt(list.size() - 5);
-        int random5 = rand.nextInt(list.size() - 5);
-        int random6 = rand.nextInt(list.size() - 5);
+        //Make random number variable
+        int randomNumber;
 
+        for(int i = 0 ; i < 6 ; i++){
 
-        while( random1 % 5 != 0
-                ||
-                random2 % 5 != 0
-                ||
-                random3 % 5 != 0
-                ||
-                random4 % 5 != 0
-                ||
-                random5 % 5 != 0
-                ||
-                random6 % 5 != 0
-                ||
-                random1 == random2
-                ||
-                random1 == random3
-                ||
-                random1 == random4
-                ||
-                random1 == random5
-                ||
-                random1 == random6
-                ||
-                random2 == random3
-                ||
-                random2 == random4
-                ||
-                random2 == random5
-                ||
-                random2 == random6
-                ||
-                random3 == random4
-                ||
-                random3 == random5
-                ||
-                random3 == random6
-                ||
-                random4 == random5
-                ||
-                random4 == random6
-                ||
-                random5 == random6){
+            // Generate random integers in range 0 to hardQuestionsModList.size() - 5
+            randomNumber = rand.nextInt(list.size() - 5);
 
-            random1 = rand.nextInt(list.size() - 5);
-            random2 = rand.nextInt(list.size() - 5);
-            random3 = rand.nextInt(list.size() - 5);
-            random4 = rand.nextInt(list.size() - 5);
-            random5 = rand.nextInt(list.size() - 5);
-            random6 = rand.nextInt(list.size() - 5);
+            //If the list does not contains the number the result will be -1, and % 5 gives numbers that are divided in 5
+            while(randomNumberList.lastIndexOf(randomNumber) != -1 || randomNumber % 5 != 0){
 
+                // Generate new random number
+                randomNumber = rand.nextInt(list.size() - 5);
+            }
+
+            //Add the number to the array
+            randomNumberList.add(randomNumber);
         }
 
-//        System.out.println(random1);
-//        System.out.println(random2);
-//        System.out.println(random3);
-//        System.out.println(random4);
-//        System.out.println(random5);
-//        System.out.println(random6);
-
-        randomNumberList.add(random1);
-        randomNumberList.add(random2);
-        randomNumberList.add(random3);
-        randomNumberList.add(random4);
-        randomNumberList.add(random5);
-        randomNumberList.add(random6);
+//        for(int i = 0 ; i < randomNumberList.size() ; i++){
+//            System.out.println(randomNumberList.get(i).toString());
+//        }
 
         return randomNumberList;
     }
+
 
     public ArrayList<Question_board> extractBoardQuestions(ArrayList<Question> list, ArrayList<Integer> randomNumbers){
 
