@@ -68,7 +68,7 @@ public class TUI {
                     throw new UnsupportedOperationException("You got an InterruptedException: " + e.getMessage());
                 }
             }
-            writer.print("");
+            writer.println("");
             writer.flush();
             Thread.sleep(500);
         } catch (InterruptedException e){
@@ -91,7 +91,7 @@ public class TUI {
                     throw new UnsupportedOperationException("You got an InterruptedException: " + e.getMessage());
                 }
             }
-            writer.print("");
+            writer.println("");
             writer.flush();
             Thread.sleep(1500);
         } catch (InterruptedException i){
