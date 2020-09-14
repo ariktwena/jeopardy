@@ -24,7 +24,6 @@ public class Game {
         this.easyQuestionsList = easyQuestionsList;
         this.hardQuestionsList = hardQuestionsList;
         this.tui = new TUI(scanner, writer);
-        //this.tui = new TUI(new Scanner(System.in), new PrintWriter(System.out));
         this.player = null;
         this.gameStart = false;
         this.exitGame = false;
