@@ -74,11 +74,11 @@ public class Game {
     }
 
     public void whatBoardToPlay(){
-        if (numberOfAnswers < 3) {
+        if (numberOfAnswers < 30) {
             playTheGame(easyQuestionsList);
         } else {
 
-            if(numberOfAnswers == 3){
+            if(numberOfAnswers == 30){
                 tui.getHardBoardMessage();
             }
 
